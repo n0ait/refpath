@@ -11,7 +11,7 @@ export const Social = () => {
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl");
 
-  const providerSignIn = (provider: "azure-ad" | "github") => {
+  const providerSignIn = (provider: "google" | "apple") => {
     signIn(provider, {
       callbackUrl: callbackUrl || DEFAULT_LOGIN_REDIRECT
     })
@@ -30,23 +30,23 @@ export const Social = () => {
         </div>
       </div>
       <div className="flex items-center w-full gap-x-2">
-        {/* <Button
-          size="lg"
-          className="w-full"
-          variant="outline"
-          onClick={() => providerSignIn("github")}
-        >
-          <Icons.gitHub className="h-5 w-5 mr-2" />
-          Github
-        </Button> */}
         <Button
           size="lg"
           className="w-full"
           variant="outline"
-          onClick={() => providerSignIn("azure-ad")}
+          onClick={() => providerSignIn("apple")}
         >
-          <Icons.microsoft className="h-5 w-5 mr-2" />
-          Microsoft
+          <Icons.apple className="h-5 w-5 mr-2" />
+          Apple
+        </Button>
+        <Button
+          size="lg"
+          className="w-full"
+          variant="outline"
+          onClick={() => providerSignIn("google")}
+        >
+          <Icons.google className="h-5 w-5 mr-2" />
+          Google
         </Button>
       </div>
     </div>

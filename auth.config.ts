@@ -1,6 +1,7 @@
 import type { NextAuthConfig } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
-import AzureAd from "next-auth/providers/azure-ad";
+import Google from "next-auth/providers/google";
+import AppleProvider from "next-auth/providers/apple";
 import Github from "next-auth/providers/github";
 import { LoginSchema } from "@/schemas/auth";
 import { getUserByMail } from "./data/users";
@@ -12,11 +13,13 @@ export default {
       clientId: process.env.GITHUB_CLIENT_ID,
       clientSecret: process.env.GITHUB_CLIENT_SECRET
     }),
-    AzureAd({
-      tenantId: process.env.AZURE_TENANT_ID,
-      clientId: process.env.AZURE_CLIENT_ID,
-      clientSecret: process.env.AZURE_CLIENT_SECRET,
-      authorization: { params: { scope: "openid profile User.Read email" } },
+    Google({
+      clientId: process.env.GOOGLE_ID,
+      clientSecret: process.env.GOOGLE_SECRET,
+    }),
+    AppleProvider({
+      clientId: process.env.APPLE_ID,
+      clientSecret: process.env.APPLE_SECRET || ""
     }),
     Credentials({
       async authorize(credentials){

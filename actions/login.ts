@@ -41,10 +41,6 @@ export const login = async (
     try{
       let redirect = DEFAULT_LOGIN_REDIRECT;
 
-      if(existingUser.lastSociete){
-        redirect = `/societe/${existingUser.lastSociete}`;  
-      };
-
       await signIn("credentials", {
         email,
         password,
