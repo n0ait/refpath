@@ -1,3 +1,4 @@
+import MainWrapper from "@/components/main-wrapper";
 import { PageHeader } from "@/components/page-header";
 
 const HomeLayout = ({ 
@@ -8,9 +9,9 @@ const HomeLayout = ({
   return (
     <>
       <PageHeader title="Les derniers QCM" />
-      <div className="w-full md:w-2/3 mx-auto p-2">
+      <MainWrapper>
         {children}
-      </div>
+      </MainWrapper>
     </>
   )
 }

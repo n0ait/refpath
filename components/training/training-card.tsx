@@ -12,9 +12,7 @@ import { Badge } from "@/components/ui/badge";
 
 interface TrainingCardProps {
   title: string
-  image?: string
   difficulty?: "easy" | "medium" | "hard"
-  level?: string
   createdBy: string
   createdAt: string
 }
@@ -22,15 +20,13 @@ interface TrainingCardProps {
 export const TrainingCard = (
   {
     title,
-    image,
     difficulty,
-    level,
     createdBy,
     createdAt
   }: TrainingCardProps
 ) => {
   return (
-    <Card className="shadow-none border hover:border-black dark:hover:border-white cursor-pointer">
+    <Card className="shadow-none border duration-300 hover:border-black dark:hover:border-white cursor-pointer">
       <CardHeader>
         <div className="flex justify-between items-center">
           <div>
