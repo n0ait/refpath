@@ -8,7 +8,7 @@ const HomeLayout = ({
   return (
     <>
       <PageHeader title="Les derniers QCM" />
-      <div className="w-2/3 mx-auto">
+      <div className="w-full md:w-2/3 mx-auto p-2">
         {children}
       </div>
     </>
