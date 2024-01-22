@@ -33,6 +33,12 @@
     --ring: 222.2 84% 4.9%;
  
     --radius: 0.5rem;
+
+    --easy: 120 50% 80%; /* Light green */
+
+    --medium: 30 70% 55%; /* Medium orange */
+    
+    --hard: 0 70% 40%;
   }
  
   .dark {

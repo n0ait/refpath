@@ -7,8 +7,10 @@ const HomeLayout = ({
 }) => { 
   return (
     <>
-      <PageHeader title="Accueil" />
-      {children}
+      <PageHeader title="Les derniers QCM" />
+      <div className="w-2/3 mx-auto">
+        {children}
+      </div>
     </>
   )
 }
