@@ -11,10 +11,10 @@ import { CalendarIcon } from "@radix-ui/react-icons";
 import { Badge } from "@/components/ui/badge";
 
 interface TrainingCardProps {
-  title: string
+  title: string | null
   difficulty?: "easy" | "medium" | "hard"
-  createdBy: string
-  createdAt: string
+  createdBy: string | null
+  createdAt: Date
 }
 
 export const TrainingCard = (
@@ -53,7 +53,7 @@ export const TrainingCard = (
       <CardFooter>
         <div className="flex items-center text-muted-foreground text-sm space-x-1">
           <CalendarIcon /> 
-          <p>{createdAt}</p>
+          <p>{createdAt.toLocaleDateString('fr-FR')}</p>
         </div>
       </CardFooter>
     </Card>

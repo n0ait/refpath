@@ -106,6 +106,7 @@ model Training {
   title      String?
   createdAt  DateTime @default(now())
   createdBy  String
+  isPublic   Boolean @default(false)
   difficulty Difficulty
   questions  TrainingQuestion[]
   users      TrainingUser[]
