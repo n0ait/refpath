@@ -1,4 +1,4 @@
-import LoadingCard from "./loading-card";
+import LoadingCard from "./_components/loading-card";
 
 const TrainingLoading = () => {
   return ( 
