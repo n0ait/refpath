@@ -1,5 +1,4 @@
 import { UserNav } from "@/components/dashboard/nav/user-nav";
-import { Search } from "@/components/training/search-training";
 import Link from "next/link";
 import Footer from "@/components/footer/footer";
 import Image from "next/image";

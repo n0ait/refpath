@@ -19,9 +19,12 @@ export const getTraining = async () => {
   }
 }
 
-export const getTrainingWithSearch = async (searchText: string) => {
+const TRAININGS_PER_PAGE = 6;
+export const getTrainingWithSearch = async (searchText: string, currentPage: number) => {
+  const offset = (currentPage - 1) * TRAININGS_PER_PAGE;
+
   try {
-    const trainings = db.training.findMany({
+    const trainings = await db.training.findMany({
       where: {
         isPublic: true,
         title: {
@@ -34,11 +37,13 @@ export const getTrainingWithSearch = async (searchText: string) => {
             name: true
           }
         }
-      }
-    })
+      },
+      take: TRAININGS_PER_PAGE,
+      skip: offset,
+    });
 
     return trainings;
-  } catch {
+  } catch (error) {
     return null;
   }
-}
+};
