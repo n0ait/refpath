@@ -4,7 +4,7 @@ const TrainingLoading = () => {
   return ( 
     <>
       {[...Array(9)].map((_, i) => (
-        <LoadingCard />
+        <LoadingCard key={i}/>
         ))}
       
     </>
