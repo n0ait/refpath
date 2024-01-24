@@ -1,27 +1,36 @@
-import { Search } from "@/components/training/search-training";
+import SearchTraining from "@/components/training/search-training";
 import SortTraining from "@/components/training/sort-training";
-import { TrainingCard } from "@/components/training/training-card";
-import { getTraining } from "@/data/training";
+import { Suspense } from "react";
+import TrainingList from "./_components/trainings-list";
+import TrainingLoading from "./_components/training-loading";
 
-const HomePage = async () => {
-  const trainings = await getTraining();
+interface HomePageSearchProps {
+  searchParams?: {
+    query?: string;
+    page?: string;
+  }
+}
+
+const HomePage = async (
+  {
+    searchParams,
+  }: HomePageSearchProps
+) => {
+  const query = searchParams?.query || '';
+  const currentPage = Number(searchParams?.page) || 1;
+
+
 
   return (
     <>
       <div className="mb-3 flex space-x-4">
-        <Search />
+        <SearchTraining placeholder="Rechercher un entrainement..." />
         <SortTraining />
       </div>
       <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-        {trainings && trainings.map((training) => (
-          <TrainingCard 
-            key={training.id} 
-            title={training.title} 
-            createdAt={training.createdAt} 
-            createdBy={training.user.name} 
-            difficulty={training.difficulty}
-          /> 
-        ))}
+        <Suspense key={query + currentPage} fallback={<TrainingLoading/>}>
+          <TrainingList query={query} currentPage={currentPage} />
+        </Suspense>
       </div>
     </>
   )
