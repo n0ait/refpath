@@ -42,3 +42,28 @@ export const getTrainingWithSearch = async (searchText: string) => {
     return null;
   }
 }
+
+export const getTrainingById = async (trainingId: string) => {
+  try{
+    const training = await db.training.findUnique({
+      where: {
+        id: trainingId
+      },
+      include: {
+        questions: {
+          include: {
+            question: {
+              include: {
+                propositions: true
+              }
+            }
+          }
+        }
+      }
+    });
+
+    return training;
+  } catch {
+    return null;
+  }
+}
