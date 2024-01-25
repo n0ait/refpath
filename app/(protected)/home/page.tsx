@@ -19,8 +19,6 @@ const HomePage = async (
   const query = searchParams?.query || '';
   const currentPage = Number(searchParams?.page) || 1;
 
-
-
   return (
     <>
       <div className="mb-3 flex space-x-4">

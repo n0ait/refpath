@@ -8,7 +8,6 @@ export default async function TrainingList({
   query: string;
   currentPage: number;
 }) {
-  //const invoices = await fetchFilteredInvoices(query, currentPage);
   const trainings = await getTrainingWithSearch(query, currentPage);
 
   return (

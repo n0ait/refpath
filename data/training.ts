@@ -48,6 +48,7 @@ export const getTrainingWithSearch = async (searchText: string, currentPage: num
   }
 }
 
+// Ajouter un mode entrainement et un mode examen !
 export const getTrainingById = async (trainingId: string) => {
   try{
     const training = await db.training.findUnique({
@@ -59,7 +60,12 @@ export const getTrainingById = async (trainingId: string) => {
           include: {
             question: {
               include: {
-                propositions: true
+                propositions: {
+                  select: {
+                    id: true,
+                    name: true,
+                  }
+                }
               }
             }
           }
