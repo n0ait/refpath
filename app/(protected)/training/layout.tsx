@@ -1,5 +1,3 @@
-import { PageHeader } from "@/components/page-header";
-
 const TrainingLayout = ({ 
   children
 }: { 
@@ -7,7 +5,6 @@ const TrainingLayout = ({
 }) => { 
   return (
     <>
-      <PageHeader title="Entraînement" />
       {children}
     </>
   )

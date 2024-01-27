@@ -11,11 +11,12 @@ const inter = Inter({ subsets: ['latin'] })
 export const metadata: Metadata = {
   title: 'Refpath',
   description: 'Refpath project',
+  metadataBase: new URL("https://repafth.fr"),
   openGraph: {
     siteName: 'Refpath',
     images: [
       {
-        url: 'https://capybara-omega.vercel.app/favicon.ico',
+        url: 'https://repafth/favicon.ico',
         width: 800,
         height: 600,
       },
@@ -25,7 +26,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Refpath',
     description: 'The refpath project',
-    images: ['https://capybara-omega.vercel.app/favicon.ico'],
+    images: ['https://repafth/favicon.ico'],
   },
 }
 

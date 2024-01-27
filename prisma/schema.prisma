@@ -81,6 +81,7 @@ model TrainingUser {
   createdAt   DateTime @default(now())
   completedAt DateTime?
   isComplete  Boolean @default(false)
+  finalGrade  Int?
 }
 
 model TrainingUserAnswer {
@@ -125,7 +126,7 @@ model TrainingQuestion {
 
 model Question {
   id           String @id @default(cuid())
-  name         String?
+  name         String
   trainings    TrainingQuestion[]
   propositions Proposition[]
   fileId       String?
