@@ -3,11 +3,13 @@ import SortTraining from "@/components/training/sort-training";
 import { Suspense } from "react";
 import TrainingList from "./_components/trainings-list";
 import TrainingLoading from "./_components/training-loading";
+import { Difficulty } from "@prisma/client";
 
 interface HomePageSearchProps {
   searchParams?: {
     query?: string;
     page?: string;
+    difficulty?: Difficulty[];
   }
 }
 
@@ -18,8 +20,7 @@ const HomePage = async (
 ) => {
   const query = searchParams?.query || '';
   const currentPage = Number(searchParams?.page) || 1;
-
-
+  const difficulty = searchParams?.difficulty;
 
   return (
     <>
@@ -29,7 +30,7 @@ const HomePage = async (
       </div>
       <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
         <Suspense key={query + currentPage} fallback={<TrainingLoading/>}>
-          <TrainingList query={query} currentPage={currentPage} />
+          <TrainingList query={query} currentPage={currentPage} difficulty={difficulty}/>
         </Suspense>
       </div>
     </>

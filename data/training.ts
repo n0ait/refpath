@@ -1,4 +1,5 @@
 import { db } from "@/lib/db";
+import { Difficulty } from "@prisma/client";
 
 export const getTraining = async () => {
   try {
@@ -19,16 +20,30 @@ export const getTraining = async () => {
   }
 }
 
-const TRAININGS_PER_PAGE = 6;
-export const getTrainingWithSearch = async (searchText: string, currentPage: number) => {
+const TRAININGS_PER_PAGE = 9;
+export const getTrainingWithSearch = async (searchText: string, currentPage: number, difficulty?: Difficulty[]) => {
   const offset = (currentPage - 1) * TRAININGS_PER_PAGE;
 
   try {
     const trainings = await db.training.findMany({
       where: {
         isPublic: true,
-        title: {
-          contains: searchText,
+        OR: [
+          {
+            title: {
+              contains: searchText,
+            },
+          },
+          {
+            user: {
+              name: {
+                contains: searchText,
+              },
+            },
+          },
+        ],
+        difficulty: {
+          in: difficulty
         }
       },
       include: {

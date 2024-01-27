@@ -1,15 +1,17 @@
 import { getTrainingWithSearch } from "@/data/training";
 import { TrainingCard } from '@/components/training/training-card';
+import { Difficulty } from "@prisma/client";
 
 export default async function TrainingList({
   query,
   currentPage,
+  difficulty
 }: {
   query: string;
   currentPage: number;
+  difficulty?: Difficulty[]
 }) {
-  //const invoices = await fetchFilteredInvoices(query, currentPage);
-  const trainings = await getTrainingWithSearch(query, currentPage);
+  const trainings = await getTrainingWithSearch(query, currentPage, difficulty);
 
   return (
     <>

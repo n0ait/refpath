@@ -5,19 +5,11 @@ import MainWrapper from "@/components/main-wrapper";
 
 const Footer = () => {
   return (
-    <footer className="w-full border">
+    <footer className="w-full border-t">
       <MainWrapper>
         <div className="flex items-center justify-between pt-10 pb-10">
           <p className="text-balance text-center text-sm leading-loose text-muted-foreground md:text-left">
-            Projet &nbsp;
-            <a target="_blank"
-              rel="noreferrer"
-              className="font-medium underline underline-offset-4" 
-              href="https://github.com/n0ait/refpath"
-            >
-              open source
-            </a>
-            , imaginé et conçu par &nbsp;
+            Projet imaginé et conçu par&nbsp;
             <a 
               target="_blank"
               rel="noreferrer"
