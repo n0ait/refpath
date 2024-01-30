@@ -17,7 +17,8 @@ export default async function TrainingList({
     <>
       {trainings?.map((training) => (
         <TrainingCard 
-          key={training.id} 
+          key={training.id}
+          trainingId={training.id}
           title={training.title} 
           createdAt={training.createdAt} 
           createdBy={training.user.name} 

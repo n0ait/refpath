@@ -5,6 +5,7 @@ import { auth } from '@/auth';
 import { cn } from '@/lib/utils';
 import { ThemeProvider } from "@/components/theme-provider";
 import './globals.css';
+import { Toaster } from '@/components/ui/sonner';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -50,6 +51,7 @@ export default async function RootLayout({
               enableSystem
               disableTransitionOnChange
             >
+              <Toaster />
               {children}
             </ThemeProvider>
           </body>

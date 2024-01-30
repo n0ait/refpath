@@ -1,7 +1,6 @@
 import MainWrapper from "@/components/main-wrapper";
 import QuestionCard from "@/components/training/questions-card";
 import { getTrainingById } from "@/data/training";
-import { Suspense } from "react";
 
 interface TrainingByIdProps {
   params: {
@@ -23,10 +22,12 @@ const TrainingById = async ({
     )
   }
 
+  const trainingUser = training.training;
+
   return (
     <MainWrapper>
       <>
-        {training.questions.map((question, i) => (
+        {trainingUser.questions.map((question, i) => (
           <QuestionCard
             key={question.questionId}
             id={question.question.id}
