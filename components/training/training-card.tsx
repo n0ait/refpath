@@ -1,7 +1,5 @@
 "use client";
 
-import { toast } from "sonner";
-import { useRouter } from "next/navigation";
 import {
   Card,
   CardHeader,
@@ -9,15 +7,12 @@ import {
   CardDescription,
   CardFooter
 } from "@/components/ui/card";
-import { ArrowRightIcon, CalendarIcon } from "@radix-ui/react-icons";
+import { CalendarIcon } from "@radix-ui/react-icons";
 import { Badge } from "@/components/ui/badge";
-import { useAction } from "@/hooks/use-action";
-import { startTraining } from "@/actions/start-training";
 import { cn } from "@/lib/utils";
-import { Button } from "../ui/button";
 
 interface TrainingCardProps {
-  trainingId: string
+
   title: string | null
   difficulty?: "easy" | "medium" | "hard"
   createdBy: string | null
@@ -26,35 +21,14 @@ interface TrainingCardProps {
 
 export const TrainingCard = (
   {
-    trainingId,
     title,
     difficulty,
     createdBy,
     createdAt
   }: TrainingCardProps
 ) => {
-  const router = useRouter();
-  
-  const { execute, isLoading } = useAction(startTraining, {
-    onError: (error) => {
-      toast.error(error);
-    },
-    onSuccess: (data) => {
-      toast.error(`Début de l'entrainement...`);
-      const trainingUserId = data.id;
-      router.push(`training/${trainingUserId}`);
-    }
-  });
-
-  const onStart = () => {
-    execute({ trainingId });
-  };
-
   return (
-
-    <Card 
-      className={cn("shadow-none border duration-300 hover:border-black dark:hover:border-white cursor-pointer")}
-    >
+    <Card className={cn("shadow-none border duration-300 hover:border-black dark:hover:border-white cursor-pointer")}>
       <CardHeader>
         <div className="flex justify-between items-center">
           <div>
@@ -83,9 +57,6 @@ export const TrainingCard = (
           <CalendarIcon /> 
           <p>{createdAt.toLocaleDateString('fr-FR')}</p>
         </div>
-        <Button variant={"ghost"} onClick={onStart}>
-          <ArrowRightIcon />
-        </Button>
       </CardFooter>
     </Card>
   )

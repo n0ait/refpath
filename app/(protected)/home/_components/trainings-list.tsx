@@ -1,6 +1,7 @@
 import { getTrainingWithSearch } from "@/data/training";
 import { TrainingCard } from '@/components/training/training-card';
 import { Difficulty } from "@prisma/client";
+import { StartTrainingDialog } from "@/components/training/start-training";
 
 export default async function TrainingList({
   query,
@@ -16,14 +17,20 @@ export default async function TrainingList({
   return (
     <>
       {trainings?.map((training) => (
-        <TrainingCard 
+        <StartTrainingDialog
           key={training.id}
           trainingId={training.id}
-          title={training.title} 
-          createdAt={training.createdAt} 
-          createdBy={training.user.name} 
-          difficulty={training.difficulty}
-        /> 
+          title={`${training.title}`}
+          description={`Voici un quizz de ${training.questions.length} questions. \n Bonne chance !`}
+        >
+          <TrainingCard 
+            key={training.id}
+            title={training.title} 
+            createdAt={training.createdAt} 
+            createdBy={training.user.name} 
+            difficulty={training.difficulty}
+          /> 
+        </StartTrainingDialog>
       ))}
     </>
   );

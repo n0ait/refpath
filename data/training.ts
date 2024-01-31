@@ -51,6 +51,11 @@ export const getTrainingWithSearch = async (searchText: string, currentPage: num
           select: {
             name: true
           }
+        },
+        questions: {
+          select: {
+            questionId: true
+          }
         }
       },
       take: TRAININGS_PER_PAGE,
