@@ -1,48 +1,40 @@
+import { cookies } from "next/headers"
 import { UserNav } from "@/components/dashboard/nav/user-nav";
-import Link from "next/link";
+import { Search } from "@/components/nav/search";
+
+import { NavContainer } from "@/components/nav/nav-container";
+import { Separator } from "@/components/ui/separator";
 import Footer from "@/components/footer/footer";
-import Image from "next/image";
 
 const AuthLayout =  async ({ 
   children
 }: { 
   children: React.ReactNode
 }) => { 
+  const collapsed = cookies().get("react-resizable-panels:collapsed")
+
+  const defaultCollapsed = collapsed ? JSON.parse(collapsed.value) : undefined
 
   return (
     <>
-      <div className="flex flex-col">
-        <div className="min-h-[100vh]">
-          <div className="flex h-16 items-center px-4 border-b">
-            <div className="flex space-x-4">
-              <Link
-                href={'/home'}>
-                <Image src="/logo.png" alt="Logo de Refpath" width={25} height={25}/>    
-              </Link>
-              <Link
-                className="font-medium"
-                href={'/home'}>
-                  Accueil
-              </Link>
-              <Link
-                className=""
-                href={'/training'}>
-                  Entraînement
-              </Link>
-              <Link
-                className=""
-                href={'/stage'}>
-                  Stage
-              </Link>
+      <div className="flex h-full">
+        <NavContainer
+          defaultCollapsed={defaultCollapsed}
+        />
+        <div className="flex flex-col w-full">
+          <div>
+            <div className="flex h-[52px] items-center px-4">
+              <div className="ml-auto flex items-center space-x-4">
+                <Search />
+                <UserNav />
+              </div>
             </div>
-              
-            <div className="ml-auto flex items-center space-x-4">
-              <UserNav />
-            </div>
+            <Separator />
           </div>
-          {children}
+          <div>
+            {children}
+          </div>
         </div>
-        <Footer />
       </div>
     </>
   )
