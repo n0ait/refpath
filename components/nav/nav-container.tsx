@@ -47,7 +47,7 @@ export function NavContainer({
     <TooltipProvider delayDuration={0}>
       <div
         className={cn(
-          "h-[100vh] w-full max-w-[200px] items-stretch transition-all duration-300 ease-in-out relative",
+          "h-[100vh] w-full max-w-[200px] items-stretch transition-all duration-300 ease-in-out relative border-r",
           isCollapsed && "min-w-[50px] max-w-[50px]"
         )}
       >
