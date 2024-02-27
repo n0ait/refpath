@@ -25,7 +25,7 @@ const AuthLayout =  async ({
           <div>
             <div className="flex h-[52px] items-center px-4">
               <div className="ml-auto flex items-center space-x-4">
-                <Search />
+                {/* <Search /> */}
                 <UserNav />
               </div>
             </div>

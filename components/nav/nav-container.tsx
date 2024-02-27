@@ -96,13 +96,14 @@ export function NavContainer({
             }
           ]}
         />
-        <div className="absolute bottom-2 p-2">
+        <div className="absolute bottom-2 right-1">
           <Button 
             onClick={toggleCollapse}
             variant={"ghost"}
+            size="sm"
           >
             <div className={cn("transition-all duration-300 ease-in-out", isCollapsed ? "rotate-180" : "")}>
-              <ArrowLeftToLine size={"14"}/>
+              <ArrowLeftToLine className="max-h-4 max-w-4"/>
             </div>
           </Button>
         </div>
