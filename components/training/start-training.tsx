@@ -43,11 +43,9 @@ export const StartTrainingDialog = (
     onError: (error) => {
       toast.error(error);
     },
-    onSuccess: (data) => {
-      router.push(`training/${data.id}`);
-    },
-    onComplete: () => {
-      toast.error(`Début de l'entrainement...`);
+    onSuccess: (training) => {
+      router.push(`/training/${training.id}`)
+      toast.success(`Début de l'entrainement...`);
     }
   });
 

@@ -6,6 +6,7 @@ import { createSafeAction } from "@/lib/create-safe-action";
 import { StartTraining } from "./schema";
 import { InputType, ReturnType } from "./types";
 import { currentUser } from "@/lib/auth";
+import { redirect } from "next/navigation";
 
 const handler = async (data: InputType): Promise<ReturnType> => {
   const user = await currentUser();

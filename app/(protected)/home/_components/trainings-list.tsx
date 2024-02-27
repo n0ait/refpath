@@ -21,7 +21,7 @@ export default async function TrainingList({
           key={training.id}
           trainingId={training.id}
           title={`${training.title}`}
-          description={`Voici un quizz de ${training.questions.length} questions. \n Bonne chance !`}
+          description={`Voici un quizz de ${training.questions.length} questions pour vous entraîner. Bonne chance !`}
         >
           <TrainingCard 
             key={training.id}
