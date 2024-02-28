@@ -1,5 +1,6 @@
 import { db } from "@/lib/db";
 import { Difficulty } from "@prisma/client";
+import { currentUser } from "@/lib/auth";
 
 export const getTraining = async () => {
   try {
@@ -98,6 +99,36 @@ export const getTrainingById = async (trainingId: string) => {
     });
 
     return training;
+  } catch {
+    return null;
+  }
+}
+
+export const getLastTrainingUser = async () => {
+  const user = await currentUser();
+
+  if (!user) {
+    return null;
+  }
+
+  try {
+    const trainingUser = await db.trainingUser.findMany({
+      where: {
+        user: {
+          id: user.id
+        }
+      },
+      include: {
+        training: {
+          select: {
+            difficulty: true,
+            title: true
+          }
+        }
+      }
+    })
+
+    return trainingUser;
   } catch {
     return null;
   }
