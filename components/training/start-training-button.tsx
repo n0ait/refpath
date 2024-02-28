@@ -1,34 +1,38 @@
-"use client";
-
 import { ArrowRight } from "lucide-react";
 import { Button } from "../ui/button";
 import { StartTrainingDialog } from "./start-training";
+import startRandomTraining from "@/actions/start-random-training";
 
 interface StartTrainingButtonProps {
   label: string
   variant: "ghost" | "default"
-  trainingId: string
   title: string
   description: string
 }
 
-export const StartTrainingButton = ({
+export const StartTrainingButton = async ({
   label, 
   variant,
-  trainingId,
   title,
   description,
 } : StartTrainingButtonProps
 ) => {
+
+  const randomTrainingId = await startRandomTraining();
+  if(!randomTrainingId) {
+    return null;
+  }
+  
   return (
     <StartTrainingDialog
       title={title}
-      trainingId={trainingId}
+      trainingId={randomTrainingId}
       description={description}
     >
       <Button
         variant={variant}
         size="sm"
+        className="mb-2"
       >
         {label}
         <ArrowRight className="ml-2 h-4 w-4"/>

@@ -6,7 +6,6 @@ import { createSafeAction } from "@/lib/create-safe-action";
 import { StartTraining } from "./schema";
 import { InputType, ReturnType } from "./types";
 import { currentUser } from "@/lib/auth";
-import { redirect } from "next/navigation";
 
 const handler = async (data: InputType): Promise<ReturnType> => {
   const user = await currentUser();
@@ -17,23 +16,23 @@ const handler = async (data: InputType): Promise<ReturnType> => {
     };
   }
 
-  const { trainingId } = data;
-  let trainingUser;
+  let { trainingId } = data;
 
   try {
     const training = await db.trainingUser.create({
       data: {
         trainingId: trainingId,
-        userId: user.id,
+        userId: user.id
       }
-    })
+    });
 
     return {
       data: training,
     };
   } catch (error) {
+    console.log(error)
     return {
-      error: "Erreur lors du début de l'entraînement."
+      error: "Erreur lors du début de l'entraînement..."
     }
   }
 };
