@@ -14,7 +14,7 @@ import {
 
 import { useAction } from "@/hooks/use-action";
 import { startTraining } from "@/actions/start-training";
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
 import { SymbolIcon } from "@radix-ui/react-icons";
 
 interface StartTrainingProps {

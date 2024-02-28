@@ -1,5 +1,5 @@
-import SearchTraining from "@/components/training/search-training";
-import SortTraining from "@/components/training/sort-training";
+import SearchTraining from "@/components/training/list-training/search-training";
+import SortTraining from "@/components/training/list-training/sort-training";
 import { Suspense } from "react";
 import TrainingList from "./_components/trainings-list";
 import TrainingLoading from "./_components/training-loading";

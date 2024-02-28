@@ -7,9 +7,10 @@ import {
   CardDescription,
   CardFooter
 } from "@/components/ui/card";
+import { QuestionProposition } from "./question-proposition";
 
 interface QuestionCardProps {
-  id: string
+  questionId: string
   name: string
   file?: string
   questionNumber: number
@@ -22,7 +23,7 @@ interface PropositionProps {
 }
 
 const QuestionCard = ({
-    id,
+    questionId,
     name,
     file,
     questionNumber,
@@ -36,7 +37,10 @@ const QuestionCard = ({
         <CardTitle>{name}</CardTitle>
       </CardHeader>
       <CardFooter>
-        <p>{JSON.stringify(propositions)}</p>
+        <QuestionProposition 
+          questionId={questionId}
+          propositions={propositions}
+        />
       </CardFooter>
     </Card>
   )

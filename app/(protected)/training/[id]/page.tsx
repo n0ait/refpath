@@ -1,5 +1,5 @@
 import MainWrapper from "@/components/main-wrapper";
-import QuestionCard from "@/components/training/questions-card";
+import QuestionCard from "@/components/training/question/question-card";
 import { getTrainingById } from "@/data/training";
 
 interface TrainingByIdProps {
@@ -30,7 +30,7 @@ const TrainingById = async ({
         {trainingUser.questions.map((question, i) => (
           <QuestionCard
             key={question.questionId}
-            id={question.question.id}
+            questionId={question.question.id}
             name={question.question.name}
             questionNumber={i + 1}
             propositions={question.question.propositions}

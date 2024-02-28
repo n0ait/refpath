@@ -1,6 +1,6 @@
 import { ArrowRight } from "lucide-react";
-import { Button } from "../ui/button";
-import { StartTrainingDialog } from "./start-training";
+import { Button } from "@/components/ui/button";
+import { StartTrainingDialog } from "@/components/training/list-training/start-training-dialog";
 import startRandomTraining from "@/actions/start-random-training";
 
 interface StartTrainingButtonProps {
@@ -38,6 +38,5 @@ export const StartTrainingButton = async ({
         <ArrowRight className="ml-2 h-4 w-4"/>
       </Button>
     </StartTrainingDialog>
-    
   )
 }
