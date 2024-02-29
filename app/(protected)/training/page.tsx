@@ -15,11 +15,18 @@ const PageTraining = async () => {
           variant="default"
           label="Commencer un QCM"
           title="QCM Aléatoire"
-          description={`Une série de 20 questions aléatoires. Vous avez également le résultats avec une explication détaillée à la fin de chaque question. Bon entraînement !`}
+          description={`
+            Une série de 20 questions aléatoires. 
+            Vous avez également le résultats avec une explication détaillée à la fin de chaque question. 
+            Bon entraînement !
+          `}
         />
-        <Suspense fallback={<TrainingLoading/>}>
-          <LastTrainings />
-        </Suspense>
+        <h1 className="text-lg font-medium mt-8 mb-2">Vos derniers entraînements :</h1>
+        <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+          <Suspense fallback={<TrainingLoading/>}>
+            <LastTrainings />
+          </Suspense>
+        </div>
       </MainWrapper>
     </>
   )

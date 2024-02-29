@@ -1,7 +1,7 @@
 import { getTrainingWithSearch } from "@/data/training";
 import { TrainingCard } from '@/components/training/training-card';
 import { Difficulty } from "@prisma/client";
-import { StartTrainingDialog } from "@/components/training/start-training";
+import { StartTrainingDialog } from "@/components/training/list-training/start-training-dialog";
 
 export default async function TrainingList({
   query,

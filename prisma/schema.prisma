@@ -121,6 +121,8 @@ model TrainingQuestion {
   training     Training @relation(fields: [trainingId], references: [id])
   trainingId   String
 
+  isAnswered    Boolean  @default(false)
+
   @@id([questionId, trainingId])
 }
 
