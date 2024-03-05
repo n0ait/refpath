@@ -8,7 +8,7 @@ const HomeLayout = ({
 }) => { 
   return (
     <>
-      <PageHeader title="Les derniers QCM" />
+      <PageHeader title="QCM récemment ajoutés" />
       <MainWrapper>
         {children}
       </MainWrapper>
