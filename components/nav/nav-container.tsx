@@ -71,7 +71,7 @@ export function NavContainer({
               link: "/training"
             },
             {
-              title: "Règles",
+              title: "Apprendre",
               label: "",
               icon: Library,
               link: "#"
