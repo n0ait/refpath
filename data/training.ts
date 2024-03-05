@@ -89,9 +89,13 @@ export const getTrainingById = async (trainingId: string) => {
                         name: true,
                       }
                     }
-                  }
-                }
-              }
+                  },
+                },
+              },
+              where: {
+                isAnswered: false
+              },
+              take: 1
             }
           }
         }
@@ -105,18 +109,14 @@ export const getTrainingById = async (trainingId: string) => {
 }
 
 export const getLastTrainingUser = async () => {
+  
   const user = await currentUser();
-
-  if (!user) {
-    return null;
-  }
+  if (!user) return null;
 
   try {
     const trainingUser = await db.trainingUser.findMany({
       where: {
-        user: {
-          id: user.id
-        }
+        userId: user.id
       },
       include: {
         training: {
@@ -133,3 +133,41 @@ export const getLastTrainingUser = async () => {
     return null;
   }
 }
+
+export const getNextTrainingQuestion = async (
+  trainingId: string) => {
+
+  const user = await currentUser();
+  if (!user) return null;
+
+  try {
+    const trainingUser = await db.trainingUser.findFirst({
+      where: {
+        userId: user.id,
+        trainingId: trainingId,
+      },
+      include: {
+        trainingUserAnswers: true,
+      },
+    });
+
+    if (!trainingUser) return null;
+
+    const trainingQuestions = await db.trainingQuestion.findMany({
+      where: {
+        trainingId: trainingId,
+      },
+      orderBy: {
+        questionId: 'asc',
+      },
+    });
+
+    const answeredQuestionIds = trainingUser.trainingUserAnswers.map((tua) => tua.questionId);
+    const nextUnansweredQuestion = trainingQuestions.find((tq) => !answeredQuestionIds.includes(tq.questionId));
+
+    return nextUnansweredQuestion || null;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+};
