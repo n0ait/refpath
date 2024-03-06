@@ -60,7 +60,10 @@ const config = {
         },
         hard: {
           DEFAULT: "hsl(var(--hard))"
-        }
+        },
+        refpath: {
+          DEFAULT: "hsl(var(--refpath))"
+        },
       },
       borderRadius: {
         lg: "var(--radius)",

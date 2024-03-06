@@ -17,6 +17,7 @@ import { Nav } from "./nav";
 import { Separator } from "@/components/ui/separator";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Button } from "../ui/button";
+import { ModeToggle } from "../mode-toggle";
 
 interface NavContainerProps {
   defaultCollapsed?: boolean
@@ -96,6 +97,7 @@ export function NavContainer({
             }
           ]}
         />
+        <ModeToggle />
         <div className="absolute bottom-2 right-1">
           <Button 
             onClick={toggleCollapse}

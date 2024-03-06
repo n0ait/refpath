@@ -81,6 +81,7 @@ export const getTrainingById = async (trainingId: string) => {
           include : {
             questions: {
               select: {
+                id: true,
                 question: {
                   select: {
                     id: true,

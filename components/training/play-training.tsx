@@ -1,9 +1,11 @@
 "use client";
 
 import React from "react";
+import { z } from "zod";
 
 import { Training, Question } from "@prisma/client";
-import { ChevronRight, Timer } from "lucide-react";
+import { useTransition } from "react";
+import { Check, Timer } from "lucide-react";
 import {
   Card,
   CardDescription,
@@ -12,10 +14,13 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import TrainingAnswerChecker from "./training-answers-checker";
+import { CheckAnswerSchema } from "@/schemas/training/QuestionSchema";
+import { answerQuestion } from "@/actions/question/answer-question";
 
 type Props = {
   training: Training & {
     questions: {
+      id: string
       question: Pick<Question, "id" | "question" | "options">;
     }[];
   };
@@ -23,7 +28,9 @@ type Props = {
 
 const PlayTraining = ({ training }: Props) => {
   const [questionIndex, setQuestionIndex] = React.useState(0);
-  const [selectedChoice, setSelectedChoice] = React.useState<number>(0);
+  // Keep using array for selected choices to handle multiple selections
+  const [selectedChoices, setSelectedChoices] = React.useState<string[]>([]);
+  const [isPending, startTransition] = useTransition();
 
   const currentQuestion = React.useMemo(() => {
     return training.questions[questionIndex];
@@ -34,6 +41,33 @@ const PlayTraining = ({ training }: Props) => {
     if (!currentQuestion.question.options) return [];
     return currentQuestion.question.options as string[];
   }, [currentQuestion]);
+
+  const handleOptionClick = (optionValue: string) => {
+    const selectedIndex = selectedChoices.indexOf(optionValue);
+    if (selectedIndex > -1) {
+      setSelectedChoices(selectedChoices.filter((choice) => choice !== optionValue));
+    } else {
+      setSelectedChoices([...selectedChoices, optionValue]);
+    }
+  };
+
+  const onSubmit = () => {
+    const submissionValues = {
+      userInput: selectedChoices,
+      trainingQuestionId: currentQuestion.id,
+      questionId: currentQuestion.question.id,
+    };
+    
+    startTransition(() => {
+      answerQuestion(submissionValues).then((isCorrect) => {
+        if (isCorrect) {
+          setQuestionIndex(questionIndex + 1);
+        }
+      });
+
+      setSelectedChoices([]);
+    });
+  };
 
   return (
     <div>
@@ -48,14 +82,14 @@ const PlayTraining = ({ training }: Props) => {
           </div>
         </div>
         <TrainingAnswerChecker
-          correct_answers={16}
-          wrong_answers={4}
+          correct_answers={3}
+          wrong_answers={0}
         />
       </div>
 
       <Card className="w-full mt-4">
         <CardHeader className="flex flex-row items-center">
-          <CardTitle className="mr-5 text-center divide-y divide-zinc-600/50">
+          <CardTitle className="mr-5 text-center">
             <div>
               <span>{questionIndex + 1 }</span>
                 /
@@ -68,32 +102,29 @@ const PlayTraining = ({ training }: Props) => {
         </CardHeader>
       </Card>
 
-      <div className="flex flex-col items-center justify-center w-full mt-4">
-      {options.map((option, index) => {
-          return (
-            <Button
-              key={option}
-              variant={selectedChoice === index ? "default" : "outline"}
-              className="justify-start w-full py-8 mb-4"
-              onClick={() => setSelectedChoice(index)}
-            >
-              <div className="flex items-center justify-start">
-                <div className="p-2 px-3 mr-5 border rounded-md">
-                  {index + 1}
-                </div>
-                <div className="text-start">{option}</div>
-              </div>
-            </Button>
-          );
-        })}
-
+      <div className="flex flex-col items-end justify-center w-full mt-4">
+      {options.map((option) => (
         <Button
-          variant="default"
-          className="mt-2"
-          size="lg"
+          key={option}
+          variant={selectedChoices.includes(option) ? "selectedChoice" : "outline"}
+          className="justify-start w-full transition ease-in-out duration-300 py-6 mb-2"
+          onClick={() => handleOptionClick(option)}
         >
-          Question suivante <ChevronRight className="w-4 h-4 ml-2" />
+          <div className="flex items-center justify-start">
+            <div className="text-start">{option}</div>
+          </div>
         </Button>
+      ))}
+
+      <Button
+        variant="default"
+        className="mt-2"
+        size="lg"
+        onClick={onSubmit}
+        disabled={selectedChoices.length === 0 || isPending}
+      >
+        Submit <Check className="w-4 h-4 ml-2" />
+      </Button>
       </div>
     </div>
   )

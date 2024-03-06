@@ -5,3 +5,13 @@ export const QuestionSchema = z.object({
     message: "Vous devez au moins selectionner une réponse.",
   }),
 })
+
+export const CheckAnswerSchema = z.object({
+  userInput: z.array(z.string()),
+  trainingQuestionId: z.string(),
+  questionId: z.string(),
+});
+
+export const EndTrainingchema = z.object({
+  trainingId: z.string(),
+});
