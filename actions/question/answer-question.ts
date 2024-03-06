@@ -7,14 +7,7 @@ export const AnswerQuestion = async (questionId: string, trainingId: string) => 
   const user = await currentUser();
   if (!user) return null;
 
-  await db.trainingQuestion.update({
-    where: {
-      questionId_trainingId: {questionId, trainingId }
-    },
-    data: {
-      isCorrect: !null 
-    },
-  })
+  console.log(questionId, trainingId);
   
   return "";
 }
