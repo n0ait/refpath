@@ -12,7 +12,7 @@ export const AnswerQuestion = async (questionId: string, trainingId: string) => 
       questionId_trainingId: {questionId, trainingId }
     },
     data: {
-      isAnswered: true
+      isCorrect: !null 
     },
   })
   

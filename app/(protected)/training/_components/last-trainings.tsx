@@ -7,15 +7,13 @@ export const LastTrainings =  async () => {
 
   if(!trainingUser) {
     return (
-      <>
-        <p>Vous n'avez encore fait aucun entraînement...</p>
-      </>
+      <p>{`Vous n'avez encore fait aucun entraînement...`}</p>
     )
   }
 
   return (
     <>
-      {trainingUser.map( (trainingUser) => (
+      {trainingUser.map((trainingUser) => (
         <LastTrainingCard 
           key={trainingUser.id}
           createdAt={trainingUser.createdAt}

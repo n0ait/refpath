@@ -80,22 +80,18 @@ export const getTrainingById = async (trainingId: string) => {
         training: {
           include : {
             questions: {
-              include: {
+              select: {
                 question: {
-                  include: {
-                    propositions: {
-                      select: {
-                        id: true,
-                        name: true,
-                      }
-                    }
-                  },
+                  select: {
+                    id: true,
+                    question: true,
+                    options: true,
+                  }
                 },
               },
               where: {
-                isAnswered: false
-              },
-              take: 1
+                isCorrect: null
+              }
             }
           }
         }
@@ -130,44 +126,6 @@ export const getLastTrainingUser = async () => {
 
     return trainingUser;
   } catch {
-    return null;
-  }
-}
-
-export const getNextTrainingQuestion = async (
-  trainingId: string) => {
-
-  const user = await currentUser();
-  if (!user) return null;
-
-  try {
-    const trainingUser = await db.trainingUser.findFirst({
-      where: {
-        userId: user.id,
-        trainingId: trainingId,
-      },
-      include: {
-        trainingUserAnswers: true,
-      },
-    });
-
-    if (!trainingUser) return null;
-
-    const trainingQuestions = await db.trainingQuestion.findMany({
-      where: {
-        trainingId: trainingId,
-      },
-      orderBy: {
-        questionId: 'asc',
-      },
-    });
-
-    const answeredQuestionIds = trainingUser.trainingUserAnswers.map((tua) => tua.questionId);
-    const nextUnansweredQuestion = trainingQuestions.find((tq) => !answeredQuestionIds.includes(tq.questionId));
-
-    return nextUnansweredQuestion || null;
-  } catch (error) {
-    console.error(error);
     return null;
   }
 };

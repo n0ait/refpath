@@ -4,7 +4,6 @@ const prisma = new PrismaClient();
 
 async function main() {
   await prisma.trainingUser.deleteMany();
-  await prisma.proposition.deleteMany();
   await prisma.question.deleteMany();
   await prisma.training.deleteMany();
   await prisma.user.deleteMany();
@@ -20,8 +19,6 @@ async function main() {
       emailVerified: '2024-02-27T10:34:29.908Z'
     },
   });
-
-  console.log({ user1 });
 
   const training1 = await prisma.training.create({
     data: {
@@ -59,73 +56,21 @@ async function main() {
     }
   })
 
-  console.log({training1, training2, training3, training4})
-
   const question1 = await prisma.question.create({
     data: {
-      name: "Question 1 - Choix multiples",
-      propositions: {
-        createMany: {
-          data: [
-            {
-              name: "A - Réponse A",
-              isAnswer: true,
-            },
-            {
-              name: "B - Réponse B",
-              isAnswer: true,
-            },
-            {
-              name: "C - Réponse C",
-              isAnswer: false,
-            }
-          ],
-        }
-      }
+      question: "VRAI / FAUX",
+      options: ["VRAI", "FAUX"],
+      answer: ["VRAI"]
     }
   })
 
   const question2 = await prisma.question.create({
     data: {
-      name: "Question 2 - Vrai / Faux",
-      propositions: {
-        createMany: {
-          data: [
-            {
-              name: "A - Vrai",
-              isAnswer: true,
-            },
-            {
-              name: "B - Faux",
-              isAnswer: false,
-            }
-          ],
-        }
-      }
+      question: "A / B / C / D / E",
+      options: ["A", "B", "C", "D", "E"],
+      answer: ["A", "D", "E"]
     }
   })
-
-  const question3 = await prisma.question.create({
-    data: {
-      name: "Question 3 - Oui / Non",
-      propositions: {
-        createMany: {
-          data: [
-            {
-              name: "A - Oui",
-              isAnswer: false,
-            },
-            {
-              name: "B - Non",
-              isAnswer: true,
-            }
-          ],
-        }
-      }
-    }
-  })
-
-  console.log({question1, question2, question3})
 }
 
 main()

@@ -38,6 +38,7 @@ const startRandomTraining = async () => {
       questions: {
         create: randomQuestions.map(q => ({
           questionId: q.id,
+          
         })),
       },
     },

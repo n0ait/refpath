@@ -1,6 +1,7 @@
 import MainWrapper from "@/components/main-wrapper";
-import QuestionCard from "@/components/training/question/question-card";
+import PlayTraining from "@/components/training/play-training";
 import { getTrainingById } from "@/data/training";
+import { redirect } from "next/navigation";
 
 interface TrainingByIdProps {
   params: {
@@ -12,31 +13,14 @@ const TrainingById = async ({
   params 
 }: TrainingByIdProps) => {
 
-  const training = await getTrainingById(params.id);
+  const trainingUser = await getTrainingById(params.id);
+  if(!trainingUser) return redirect("/home");
 
-  if(!training) {
-    return (
-      <p>
-        Pas de questions :
-      </p>
-    )
-  }
-
-  const trainingUser = training.training;
+  const training = trainingUser.training;
 
   return (
     <MainWrapper>
-      <>
-        {trainingUser.questions.map((question, i) => (
-          <QuestionCard
-            key={question.questionId}
-            questionId={question.question.id}
-            name={question.question.name}
-            questionNumber={i + 1}
-            propositions={question.question.propositions}
-          />
-        ))}
-      </>
+      <PlayTraining training={training} />
     </MainWrapper>
   )
 }

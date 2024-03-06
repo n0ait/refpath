@@ -77,29 +77,12 @@ model TrainingUser {
   userId      String
   training    Training @relation(fields: [trainingId], references: [id])
   trainingId  String
-  trainingUserAnswers TrainingUserAnswer[]
   createdAt   DateTime @default(now())
   completedAt DateTime?
   isComplete  Boolean @default(false)
   finalGrade  Int?
-}
 
-model TrainingUserAnswer {
-  id              String @id @default(cuid())
-  trainingUser    TrainingUser @relation(fields: [trainingUserId], references: [id])
-  trainingUserId  String
-  question        Question @relation(fields: [questionId], references: [id])
-  questionId      String
-  answers         UserAnswer[]
-  timeSpent       Int?
-}
-
-model UserAnswer {
-  id        String @id @default(cuid())
-  name      String?
-  trainingUserAnswerId String
-
-  trainingUserAnswer TrainingUserAnswer @relation(fields: [trainingUserAnswerId], references: [id])
+  @@index([userId])
 }
 
 model Training {
@@ -116,41 +99,24 @@ model Training {
 }
 
 model TrainingQuestion {
+  id           String @id @default(cuid())
+
   question     Question @relation(fields: [questionId], references: [id])
   questionId   String
   training     Training @relation(fields: [trainingId], references: [id])
   trainingId   String
 
-  isAnswered    Boolean  @default(false)
-
-  @@id([questionId, trainingId])
+  isCorrect    Boolean?
+  answers      Json?
+  timeSpent    Int?
 }
 
 model Question {
   id           String @id @default(cuid())
-  name         String
+  question     String
   trainings    TrainingQuestion[]
-  propositions Proposition[]
-  fileId       String?
-  trainingUserAnswers TrainingUserAnswer[]
-
-  file File? @relation(fields: [fileId], references: [id])
-}
-
-model Proposition {
-  id         String @id @default(cuid())
-  name       String?
-  isAnswer   Boolean @default(false)
-  questionId String
-
-  question Question @relation(fields: [questionId], references: [id])
-}
-
-model File {
-  id        String   @id @default(cuid())
-  name      String?
-  path      String?
-  createdAt DateTime @default(now())
-  fileType  FileType @default(PICTURE)
-  questions Question[]
+  options      Json
+  answer       Json
+  filePath     String?
+  fileType     FileType? @default(PICTURE)
 }
