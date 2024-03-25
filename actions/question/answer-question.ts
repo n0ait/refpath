@@ -19,11 +19,7 @@ export const answerQuestion = async (values: z.infer<typeof CheckAnswerSchema>) 
 
   if (!question || !question.answer) return null;
 
-  // this is the user input [ 'E', 'D', 'A' ] / this is answers [ 'A', 'D', 'E' ]
-  // check if the user input contain the same values as the answers, the array are JSON
-  //const isCorrect = JSON.stringify(userInput.sort()) === question.answer.sort();
-
-  const isCorrect = true; // replace this line with the above line
+  const isCorrect = userInput.every((choice) => question.answer.includes(choice));
 
   try {
     await db.trainingQuestion.update({
@@ -40,5 +36,18 @@ export const answerQuestion = async (values: z.infer<typeof CheckAnswerSchema>) 
     return null;
   }
 
-  return isCorrect;
+  return {isCorrect, question};
+}
+
+const getQuestionFeedback = async (questionId: string) => {
+  const question = await db.question.findUnique({
+    where: {
+      id: questionId
+    },
+    select: {
+      feedback: true
+    }
+  });
+
+  return question;
 }

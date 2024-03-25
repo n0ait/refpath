@@ -4,7 +4,7 @@ import { db } from "@/lib/db";
 import { currentUser } from "@/lib/auth";
 import { Question } from "@prisma/client";
 
-const QUESTION_COUNT = 2;
+const QUESTION_COUNT = 9;
 
 const startRandomTraining = async () => {
   const user = await currentUser();
@@ -37,8 +37,7 @@ const startRandomTraining = async () => {
       difficulty: 'easy',
       questions: {
         create: randomQuestions.map(q => ({
-          questionId: q.id,
-          
+          questionId: q.id
         })),
       },
     },

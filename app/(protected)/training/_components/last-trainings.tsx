@@ -21,6 +21,7 @@ export const LastTrainings =  async () => {
           title={trainingUser.training.title}
           difficulty={trainingUser.training.difficulty}
           finalGrade={trainingUser.finalGrade}
+          totalQuestions={trainingUser.training.questions.length}
         />
     ))}
     </>

@@ -71,18 +71,18 @@ export function NavContainer({
               icon: ListChecks,
               link: "/training"
             },
-            {
-              title: "Apprendre",
-              label: "",
-              icon: Library,
-              link: "#"
-            },
-            {
-              title: "Progression",
-              label: "",
-              icon: TrendingUp,
-              link: "#"
-            },
+            // {
+            //   title: "Apprendre",
+            //   label: "",
+            //   icon: Library,
+            //   link: "#"
+            // },
+            // {
+            //   title: "Progression",
+            //   label: "",
+            //   icon: TrendingUp,
+            //   link: "#"
+            // },
           ]}
         />
         <Separator />
@@ -97,7 +97,8 @@ export function NavContainer({
             }
           ]}
         />
-        <ModeToggle />
+        {/* Same for dark mode, will see later... */}
+        {/* <ModeToggle /> */}
         <div className="absolute bottom-2 right-1">
           <Button 
             onClick={toggleCollapse}

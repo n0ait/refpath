@@ -1,9 +1,11 @@
 import { PrismaClient } from "@prisma/client";
+import { readFile } from 'fs/promises';
 
 const prisma = new PrismaClient();
 
 async function main() {
   await prisma.trainingUser.deleteMany();
+  await prisma.trainingQuestion.deleteMany();
   await prisma.question.deleteMany();
   await prisma.training.deleteMany();
   await prisma.user.deleteMany();
@@ -56,21 +58,32 @@ async function main() {
     }
   })
 
-  const question1 = await prisma.question.create({
-    data: {
-      question: "VRAI / FAUX",
-      options: ["VRAI", "FAUX"],
-      answer: ["VRAI"]
-    }
-  })
+  // Création des questions et propositions depuis l'ancienne bdd de refpath...
+  const questionData = JSON.parse(await readFile('prisma/question.json', 'utf-8'));
+  const propositionData = JSON.parse(await readFile('prisma/question_propositions.json', 'utf-8')) as Proposition[];
 
-  const question2 = await prisma.question.create({
-    data: {
-      question: "A / B / C / D / E",
-      options: ["A", "B", "C", "D", "E"],
-      answer: ["A", "D", "E"]
+
+  for (const question of questionData) {
+    const options = [];
+    const answer = [];
+
+    const propositions = propositionData.filter(prop => prop.question_id === question.id);
+    
+    for (const prop of propositions) {
+      options.push(prop.choice);
+      if (prop.is_answer === '1') {
+        answer.push(prop.choice);
+      }
     }
-  })
+
+    await prisma.question.create({
+      data: {
+        question: question.question_text,
+        options: options,
+        answer: answer
+      }
+    });
+  }
 }
 
 main()
@@ -78,3 +91,12 @@ main()
   .finally(async () => {
     await prisma.$disconnect();
   });
+
+
+interface Proposition {
+  id: string;
+  question_id: string;
+  choice: string;
+  value: string;
+  is_answer: string;
+}

@@ -14,4 +14,5 @@ export const CheckAnswerSchema = z.object({
 
 export const EndTrainingchema = z.object({
   trainingId: z.string(),
+  finalGrade: z.number(),
 });

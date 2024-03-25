@@ -18,6 +18,7 @@ interface LastTrainingCardProps {
   createdAt: Date
   isComplete: boolean
   finalGrade: number | null
+  totalQuestions: number | null
 }
 
 export const LastTrainingCard = (
@@ -26,7 +27,8 @@ export const LastTrainingCard = (
     difficulty,
     createdAt,
     isComplete,
-    finalGrade
+    finalGrade,
+    totalQuestions
   }: LastTrainingCardProps
 ) => {
   return (
@@ -35,7 +37,11 @@ export const LastTrainingCard = (
         <div className="flex justify-between items-center">
           <div>
             <CardTitle>{title}</CardTitle>
-            <CardDescription>Note finale: {finalGrade}</CardDescription>
+            {isComplete && (
+            <CardDescription>
+              Note finale: {finalGrade}/{totalQuestions}
+            </CardDescription>
+            )}
           </div>
           {difficulty && (
             <Badge variant={difficulty}>

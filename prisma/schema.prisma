@@ -116,7 +116,8 @@ model Question {
   question     String
   trainings    TrainingQuestion[]
   options      Json
-  answer       Json
+  answer       String[]
+  feedback     String?
   filePath     String?
   fileType     FileType? @default(PICTURE)
 }

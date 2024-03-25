@@ -46,16 +46,17 @@ export default async function RootLayout({
             "antialiased font-sans",
             inter.className
           )}>
-            <ThemeProvider
+            {/* <ThemeProvider
               attribute="class"
               defaultTheme="system"
               enableSystem
               disableTransitionOnChange
             >
-              <Toaster />
+            //TODO : Will see for dark mode if needed
+            </ThemeProvider> */}
+            <Toaster />
               <Dialog />
               {children}
-            </ThemeProvider>
           </body>
       </html>
     </SessionProvider>

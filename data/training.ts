@@ -119,7 +119,12 @@ export const getLastTrainingUser = async () => {
         training: {
           select: {
             difficulty: true,
-            title: true
+            title: true,
+            questions: {
+              select: {
+                id: true,
+              }
+            }
           }
         }
       }
