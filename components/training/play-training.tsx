@@ -4,14 +4,9 @@ import React from "react";
 
 import { Training, Question } from "@prisma/client";
 import { useTransition } from "react";
-import { Timer, Loader2 } from "lucide-react";
-import { differenceInSeconds, set } from "date-fns";
-import {
-  Card,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Timer, Loader2, ArrowRight } from "lucide-react";
+import { differenceInSeconds } from "date-fns";
+
 import { Button } from "@/components/ui/button";
 import TrainingAnswerChecker from "./training-answers-checker";
 import { answerQuestion } from "@/actions/question/answer-question";
@@ -24,10 +19,16 @@ import {
   DrawerFooter,
   DrawerHeader,
   DrawerTitle,
-  DrawerTrigger,
 } from "@/components/ui/drawer";
 import { formatTimeDelta } from "@/lib/utils";
 import { TrainingEnded } from "./training-ended";
+import {
+  X,
+  Check
+} from "lucide-react";
+import { QuestionMarkIcon } from "@radix-ui/react-icons";
+
+import { cn } from "@/lib/utils";
 
 
 type PlayTrainingProps = {
@@ -53,10 +54,14 @@ const PlayTraining = ({ training, trainindUserId }: PlayTrainingProps) => {
   const [feedback, setFeedback] = React.useState({
     isCorrect: false,
     explanation: "",
+    answers: [""],
   });
 
   const [selectedChoices, setSelectedChoices] = React.useState<string[]>([]);
   const [isPending, startTransition] = useTransition();
+
+  const [drawerOpen, setDrawerOpen] = React.useState(false);
+  const [subbmitting, setSubmitting] = React.useState(false);
 
   const currentQuestion = React.useMemo(() => {
     return training.questions[questionIndex];
@@ -70,6 +75,9 @@ const PlayTraining = ({ training, trainindUserId }: PlayTrainingProps) => {
 
   const handleOptionClick = (optionValue: string) => {
     const selectedIndex = selectedChoices.indexOf(optionValue);
+    
+    if(subbmitting) return;
+
     if (selectedIndex > -1) {
       setSelectedChoices(selectedChoices.filter((choice) => choice !== optionValue));
     } else {
@@ -110,6 +118,7 @@ const PlayTraining = ({ training, trainindUserId }: PlayTrainingProps) => {
           setFeedback({
             isCorrect: true,
             explanation: data.question.feedback || "Désolé, aucun feedback n'est disponible pour le moment.",
+            answers: data.question.answer || [],
           });
 
         } else {
@@ -121,15 +130,20 @@ const PlayTraining = ({ training, trainindUserId }: PlayTrainingProps) => {
           setFeedback({
             isCorrect: false,
             explanation: data.question.feedback || "Désolé, aucun feedback n'est disponible pour le moment.",
+            answers: data.question.answer || [],
           });
         }
+      }).finally(() => {
+        setSubmitting(true);
+        setDrawerOpen(true);
       });
-
-      setSelectedChoices([]);
     });
   }, [selectedChoices, currentQuestion, questionIndex, training.questions]);
 
   const nextQuestion = () => {
+    setSelectedChoices([]);
+    setDrawerOpen(false);
+    setSubmitting(false);
     setQuestionIndex(questionIndex + 1);
     
     if (questionIndex === training.questions.length - 1) {
@@ -176,27 +190,27 @@ const PlayTraining = ({ training, trainindUserId }: PlayTrainingProps) => {
         />
       </div>
 
-      <Card className="w-full mt-4">
-        <CardHeader className="flex flex-row items-center">
-          <CardTitle className="mr-5 text-center">
-            <div>
-              <span>{questionIndex + 1 }</span>
-                /
-              <span className="text-slate-400">{training.questions.length}</span>
-            </div>
-          </CardTitle>
-          <CardDescription className="flex-grow text-lg">
-            {currentQuestion.question.question}
-          </CardDescription>
-        </CardHeader>
-      </Card>
+      <div className="flex mt-4">
+        <div className="text-slate-400">
+          Question {questionIndex + 1} / {training.questions.length}
+        </div>
+      </div>
+      <div className="font-medium">
+        {currentQuestion.question.question}
+      </div>
 
       <div className="flex flex-col items-end justify-center w-full mt-4">
       {options.map((option) => (
         <Button
           key={option}
           variant={selectedChoices.includes(option) ? "selectedChoice" : "outline"}
-          className="justify-start w-full transition ease-in-out duration-300 py-6 mb-2"
+
+          className={cn("justify-start w-full transition ease-in-out duration-300 py-6 mb-2", {
+            "bg-green-600": selectedChoices.includes(option) && feedback.isCorrect && subbmitting,
+            "bg-slate-300 text-slate-600 line-through": selectedChoices.includes(option) && !feedback.isCorrect && subbmitting,
+            "border-green-600 text-green-600": !selectedChoices.includes(option) && feedback.answers.includes(option) && subbmitting,
+          })}
+
           onClick={() => handleOptionClick(option)}
         >
           <div className="flex items-center justify-start">
@@ -205,43 +219,79 @@ const PlayTraining = ({ training, trainindUserId }: PlayTrainingProps) => {
         </Button>
       ))}
 
-        <Drawer onClose={nextQuestion}>
-          <DrawerTrigger asChild>
-            <Button
-              variant="default"
-              className="mt-2"
-              size="lg"
-              onClick={onSubmit}
-              disabled={selectedChoices.length === 0 || isPending || hasEnded}
-            >
-              {isPending && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
-              Valider
-            </Button>
-          </DrawerTrigger>
+      {subbmitting ? (
+        <div className="flex gap-2">
+          <Button
+            variant="outline"
+            className="mt-2"
+            size="sm"
+            onClick={() => setDrawerOpen(true)}
+          >
+            Feedback
+            <QuestionMarkIcon className="w-4 h-4 ml-2" />
+          </Button>
+          <Button
+            variant="default"
+            className="mt-2"
+            size="sm"
+            onClick={nextQuestion}
+          >
+            Question suivante
+            <ArrowRight className="w-4 h-4 ml-2" />
+          </Button>
+        </div>
+      ) : (
+        <Button
+          variant="default"
+          className="mt-2"
+          size="sm"
+          onClick={onSubmit}
+          disabled={selectedChoices.length === 0 || isPending || hasEnded}
+        >
+          {isPending && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
+          Valider
+        </Button>
+
+      )}
+      
+        <Drawer
+          open={drawerOpen}
+          onClose={() => setDrawerOpen(false)}
+        >
           <DrawerContent>
             <div className="mx-auto w-full max-w-sm">
               <DrawerHeader>
                 <DrawerTitle>
                   {feedback.isCorrect ? (
-                    <span className="text-green-500">
+                    <span className="text-green-500 flex items-center">
+                      <Check className="w-6 h-6 mr-1"/> 
                       Bonne réponse !
                     </span>
                   ): (
-                    <span className="text-red-500">
+                    <span className="text-red-500 flex items-center">
+                      <X className="w-6 h-6 mr-1"/>
                       Mauvaise réponse !
                     </span>
                   )}
                 </DrawerTitle>
                 <DrawerDescription>
-                  Explication: {feedback.explanation}
+                  <span className="font-medium">Feedback: </span>
+                  {feedback.explanation}
                 </DrawerDescription>
               </DrawerHeader>
               <DrawerFooter>
-                <DrawerClose asChild>
                   <Button 
                     onClick={nextQuestion}
                   >
                     Question suivante
+                    <ArrowRight className="w-4 h-4 ml-2" />
+                  </Button>
+                <DrawerClose asChild>
+                  <Button 
+                    variant="outline"
+                    onClick={() => setDrawerOpen(false)}
+                  > 
+                    Fermer
                   </Button>
                 </DrawerClose>
               </DrawerFooter>

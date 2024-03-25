@@ -80,7 +80,8 @@ async function main() {
       data: {
         question: question.question_text,
         options: options,
-        answer: answer
+        answer: answer,
+        feedback: question.feedback,
       }
     });
   }
